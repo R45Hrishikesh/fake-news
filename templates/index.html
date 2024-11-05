@@ -54,6 +54,7 @@
             padding: 10px;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #f4f4f9; /* Default background */
         }
         #output h2 {
             color: #2c3e50;
@@ -79,7 +80,8 @@
                 body: JSON.stringify({ text: inputText })
             });
             const data = await response.json();
-            document.getElementById('output').innerHTML = `
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = `
                 <h2>Predictions:</h2>
                 <p><strong>Logistic Regression:</strong> <span id="logisticResult"></span></p>
                 <p><strong>Decision Tree:</strong> <span id="decisionResult"></span></p>
@@ -87,7 +89,6 @@
             `;
 
             const results = [data.LogisticRegression, data.DecisionTree, data.RandomForest];
-
             let realCount = 0;
             let fakeCount = 0;
 
@@ -105,19 +106,23 @@
             });
 
             if (realCount > fakeCount) {
-                document.getElementById('output').innerHTML += `<p style="color: green;">Overall Prediction: Likely Real News</p>`;
+                outputDiv.style.backgroundColor = '#d4edda'; /* Faint green background */
+                outputDiv.innerHTML += `<p style="color: green;">Overall Prediction: Likely Real News</p>`;
             } else if (fakeCount > realCount) {
-                document.getElementById('output').innerHTML += `<p style="color: red;">Overall Prediction: Likely Fake News</p>`;
+                outputDiv.style.backgroundColor = '#f8d7da'; /* Faint red background */
+                outputDiv.innerHTML += `<p style="color: red;">Overall Prediction: Likely Fake News</p>`;
             } else {
-                document.getElementById('output').innerHTML += `<p>Mixed results found. Check individual model predictions.</p>`;
+                outputDiv.style.backgroundColor = '#f4f4f9'; /* Default background */
+                outputDiv.innerHTML += `<p>Mixed results found. Check individual model predictions.</p>`;
             }
         }
 
         function refresh() {
             document.getElementById('newsText').value = '';
-            document.getElementById('output').innerHTML = '';
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = '';
+            outputDiv.style.backgroundColor = '#f4f4f9'; /* Reset to default background */
         }
     </script>
 </body>
 </html>
-
